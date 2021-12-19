@@ -1,0 +1,348 @@
+az aks get-credentials -g rg-<cluster resource group> -n <clustername>
+
+#comandos kubectl
+kubectl [command] [TYPE] [NAME] -o <output_format>
+-o json Output a JSON formatted API object.
+-o name Print only the resource name and nothing else.
+-o wide Output in the plain-text format with any additional information.
+-o yaml Output a YAML formatted API object.
+https://kubernetes.io/docs/reference/kubectl/overview/
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+#crear una definición de pod hacia un yaml para editarlo
+kubectl run <name> --image=<image> --dry-run=client -o yaml > pod.yaml
+
+#nodes in the cluster in ready state
+kubectl get nodes
+
+#stop and start aks cluster
+az aks stop --name aks-poc-dev --resource-group rg-aks-poc
+az aks start --name aks-poc-dev --resource-group rg-aks-poc
+
+
+#autoscaler cluster
+az aks nodepool update --enable-cluster-autoscaler \
+	-g rg-aks-dev --cluster-name aks-narm-dev \
+	--name agentpool --min-count 1 --max-count 3
+az aks nodepool update --disable-cluster-autoscaler \
+	-g rg-aks-dev --cluster-name aks-narm-dev --name agentpool
+	
+az aks update \
+  --resource-group rg-aks-stg \
+  --name aks-narm-stg \
+  --enable-cluster-autoscaler \
+  --min-count 1 \
+  
+ az aks update \
+  --resource-group rg-aks-dev \
+  --name aks-narm-dev \
+  --cluster-autoscaler-profile scan-interval=10s
+
+
+
+#get pods
+kubectl get pods
+kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName --all-namespaces
+#with watch
+kubectl get pods -w
+kubectl get pods -o wide
+
+#Pods running in the kube-system namespace
+kubectl get pods -n kube-system
+kubectl describe pod coredns-748cdb7bf4-sd2st -n kube-system
+kubectl top pods -n kube-system
+#create pod
+kubectl run <name> --image=<image> --dry-run=client -o yaml > pod.yaml
+#edit pod
+kubectl edit pod <name>
+#crear yaml a partir de un pod
+kubectl get pod <pod-name> -o yaml > pod-definition.yaml
+#numero de namespaces
+kubectl get ns --no-headers | wc -l
+
+
+#status PVC
+kubectl get pvc
+#delete pvc
+kubectl delete pvc name
+#actual PV that is bound to the pods
+kubectl describe pv
+
+#service
+kubectl get service
+kubectl delete service/{nombre}
+
+#service account
+kubectl create serviceaccount <name>
+kubectl get serviceaccount
+kubectl describe serviceaccount <name>
+#volumen montado para el token del serviceaccount default que se crea para cada namespace
+kubectl exec -it <podname> ls /var/run/secrets/kubernetes.io/serviceaccount
+#contenido del token. Es utilizado para acceder a la API de kubernetes
+kubectl exec -it <podname> cat /var/run/secrets/kubernetes.io/serviceaccount/token
+#crear un serviceaccount en un pod
+container:
+---
+serviceAccountName: <name>
+
+#para que no se cree el serviceaccount por defecto en un pod
+container:
+---
+automountServiceAccountToken: false
+
+
+#requerimientos de un pod
+
+image: 
+--
+resources:
+	request:
+		memory: "1Gi"
+		cpu: 1
+	limits:
+		memory: "2Gi"
+		cpu: 2
+
+
+#deployment
+kubectl get deployment
+kubectl delete deployment/{nombre}
+kubectl delete -f deployment.yaml
+
+#events related with volumes
+kubectl get events | grep -i volume
+
+#edit a service
+kubectl edit service/wp-mariadb
+
+kubectl describe pod/<pod-name>
+
+#events
+kubectl get events
+
+#Taints
+#to taint a node
+kubectl taint nodes <node-name> key=value:taint-effect
+kubectl taint nodes  node1 app=blue:NoSchedule
+kubectl describe node kubemaster | grep Taints
+#untainted
+kubectl taint nodes <node-name> key=value:taint-effect-
+
+#Tolerations son añaddidos a los pods
+
+containers:
+----
+tolerations:
+- key: "app"
+  operator: "Equal"
+  value: "blue"
+  effect: NoSchedule
+
+
+#node selectors
+kind: Pod
+...
+spec:
+	containers:
+	- name:
+	....
+	nodeSelector
+		size: Large #labels assigned to node
+
+
+#Node Affinity
+kind: Pod
+...
+spec:
+	containers:
+	- name:
+	....
+	affinity:
+		nodeAffinity:
+			requiredDuringSchedulingIgnoredDuringExecution:
+				nodeSelectorTerms:
+				- matchExpressions:
+				  - key: size
+					operator: In
+					values:
+					- Large
+					- Medium
+					
+#NotIn operator
+	affinity:
+		nodeAffinity:
+			requiredDuringSchedulingIgnoredDuringExecution:
+				nodeSelectorTerms:
+				- matchExpressions:
+				  - key: size
+					operator: NotIn
+					values:
+					- Small
+#Exists operator
+				  - key: size
+					operator: Exists
+
+#Node Affinity Types
+Available
+requiredDuringSchedulingIgnoredDuringExecution
+preferredDuringSchedulingIgnoredDuringExecution
+
+Planned:
+requiredDuringSchedulingRequiredDuringExecution
+
+
+
+# get all
+kubectl get all
+
+#nodes
+kubectl get nodes -o wide
+kubectl top nodes
+kubect describe node <node name>
+az aks scale -n <clustername> -g <cluster resource group> -c 3
+#label the node
+kubectl label nodes <node-name> <label-key>=<label-value>
+#get labels of a node
+kubectl get nodes <node-name> --show-labels
+
+#context
+kubectl config view
+kubectl config current-context
+
+#Si aparecen contextos o cluster no deseados
+Delete the ~/.kube/config file and then run az aks get-credentials again
+Do not delete the file, but run az aks get-credentials again. This will add the context of the second cluster to the config file.
+
+
+#install cert-manager, a kubernetes add-on
+kubectl create ns cert-manager
+
+#certificate object
+kubectl get certificate
+#certificaterequest object
+kubectl get certificaterequest
+kubectl describe certificaterequest
+
+
+#check which apis support current Kubernetes object
+kubectl api-resources | grep ingress
+
+#scale
+kubectl scale statefulset.apps/release-rbmq-narm-dev-rabbitmq  --replicas=2
+
+
+
+51.138.59.62
+handsonaks-ingress-gl
+
+#Helm repo
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+#install ingress
+helm install ingress ingress-nginx/ingress-nginx
+
+#logs
+kubectl logs pod/nombre-pod
+
+#password
+kubectl exec release-rbmq-narm-dev-rabbitmq-1 --container rabbitmq -- rabbitmqctl change_password user 789d4d8007
+
+#obtener password de RabbitMQ del usuario user
+echo "Password      : $(kubectl get secret --namespace default rbmq-bitnami-narm-stg-rabbitmq -o jsonpath="{.data.rabbitmq-password}" | base64 --decode)"
+
+#namespace
+kubectl config set-context $(kubectl config current-context) --namespace=dev
+#recursos en todos los namespaces
+kubectl get pods --all-namespaces
+
+#obtener imagen de un pod
+kubectl describe pod <name> | grep -i image
+
+
+#security context
+spec:
+	securityContext:
+		runAsUser: 1000
+o a nivel de container
+spec:
+	containers:
+		- name:
+		  image:
+		  securityContext
+			runAsUser: 1000
+			capabilities: 
+				add: ["MAC_ADMIN"]
+
+#secrets
+#imperative
+kubectl create secret generic \
+	<secret-name> --from-literal=<key>=<value> \
+				  --from-literal=<key>=<value> \
+				  --from-literal=<key>=<value>
+#declarative
+kubectl create -f file.yml
+
+		apiVersion: v1
+		kind: Secret
+		metadata:
+		  name: mysecret
+		type: Opaque
+		data:
+		  username: YWRtaW4=
+		  password: MWYyZDFlMmU2N2Rm
+
+#Para convertir los valores en hash format y decodificar
+echo -n 'value' | base64
+echo -n 'dmFsdWU=' | base64 --decode
+
+#Otros comandos
+kubectl get secrets
+kubectl describe secrets #esto no muestra los valores
+kubectl get secret <name> -o yaml
+
+#para injectar un secret en un pod
+		spec:
+			containers:
+			- name
+			  ----
+			  
+			  envFrom:
+				- secretRef:
+					name: mysecret
+#otra forma de injectar valores simples
+			  env:
+				- name: username
+				  valueFrom:
+					secretKeyRef:
+						name: mysecret
+						key: username
+#injectar el secret completo como un volume
+			  volumes:
+			  - name: mysecret-volume
+			    secret:
+					secretName: mysecret
+	de esta forma se crea un volumen como una carpeta con un archivo por cada key
+	ls /opt/mysecret-volume
+	cat /opt/mysecret-volume/username
+
+
+
+#RabbitMQ
+#stop, start node rabbit
+kubectl exec release-rbmq-narm-dev-rabbitmq-1 --container rabbitmq -- rabbitmqctl forget_cluster_node rabbit@release-rbmq-narm-dev-rabbitmq-1.release-rbmq-narm-dev-rabbitmq-headless.default.svc.cluster.local
+#removing cluster node
+kubectl exec release-rbmq-narm-dev-rabbitmq-0 --container rabbitmq -- rabbitmqctl forget_cluster_node rabbit@release-rbmq-narm-dev-rabbitmq-1.release-rbmq-narm-dev-rabbitmq-headless.default.svc.cluster.local
+
+az aks nodepool scale --cluster-name handsonaks \
+-g rg-handsonaks --name agentpool--node-count 1
+
+RBACSP=$(az aks show -n $EXISTINGAKSNAME -g $RGNAME --query servicePrincipalProfile.clientId -o tsv)
+
+
+#csi-driver
+kubectl get pods -n kube-system -l 'app in (secrets-store-csi-driver, secrets-store-provider-azure)'
+
+#obtener información sobre la creación de recursos
+kubectl explain pods --recursive |grep envFrom -A3
+
