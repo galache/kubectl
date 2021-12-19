@@ -1,0 +1,42 @@
+#ReaddinessProbe
+
+#state of a pod
+kubectl describe pod <pod-name> #ver Conditions
+kubectl get pods #condition ready
+
+#El echo de que un pod esté ready no quiere decir que todas las aplicaciones en su/s container/s estén listos para responder a peticiones
+#podemos configurar test en el archivo de definición del POD mediante un nuevo campo readinessProbe
+
+containers:
+	- name
+	  ...
+	  readinessProbe:
+		httpGet:
+			path:
+			port:
+		initialDelaySeconds: 80
+        periodSeconds: 1
+
+
+#LivenessProbe
+#Puede ser que un pod esté ready pero no esté sirviendo bien las peticiones porque ha entrado en un bucle.
+#Con LivenessProbe podemos definir que significa que una aplicación esté healthy
+
+    livenessProbe:
+        httpGet:
+          path: /live
+          port: 8080
+        initialDelaySeconds: 80
+        periodSeconds: 1
+		
+#Container logging
+kubectl logs <pod-name>
+kubectl logs  <pod-name> | grep USERS
+#que contenedores contiene el pod
+kubectl logs <pod-name> -c 
+kubectl logs <pod-name> -c <container-name>
+
+#Monitor and Debug Applications
+kubelet tiene un subcomponente conocido como Container Advisor que es responsable de recuperar métricas de rendimiento de pods
+kubectl top nodes
+kubectl top pods
