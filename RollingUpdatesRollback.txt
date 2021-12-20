@@ -1,0 +1,9 @@
+#rollout information
+kubectl rollout status deployment/<deployment-name>
+kubectl rollout history deployment/<deployment-name>
+#Deployment strategy
+kubectl apply -f deployment-definition.yaml
+kubectl set image deployment/<deployment-name> nginx=nginx:1.9.1
+#rollback
+kubectl rollout undo deployment/<deployment-name>
+ 
