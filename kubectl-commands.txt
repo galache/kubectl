@@ -27,7 +27,7 @@ az aks nodepool update --enable-cluster-autoscaler \
 az aks nodepool update --disable-cluster-autoscaler \
 	-g rg-aks-dev --cluster-name aks-narm-dev --name agentpool
 	
-az aks update \
+az aks update \ 
   --resource-group rg-aks-stg \
   --name aks-narm-stg \
   --enable-cluster-autoscaler \

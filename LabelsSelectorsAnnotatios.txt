@@ -1,0 +1,11 @@
+#Pod design
+#Labels, Selectors and Annotations
+kubectl get pods --selector app=<value>
+kubectl get pods --selector env=dev
+kubectl get all --selector env=prod
+kubectl get pods -l <key>=<value>
+#numero de pods con una determinada etiqueta
+kubectl get pods -l <key>=<value> --no-headers | wc -l
+kubectl get pod -l env=prod,bu=finance,tier=frontend
+kubectl get pods --show-labels
+kubectl get pod <pod-name> --show-labels
