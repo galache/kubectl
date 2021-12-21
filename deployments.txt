@@ -1,0 +1,3 @@
+#deployments
+kubectl get deployments
+kubectl describe deployments.apps <name-deployment> | grep -i image
