@@ -1,3 +1,4 @@
 #deployments
 kubectl get deployments
+kubectl describe deployment <deployment-name>
 kubectl describe deployments.apps <name-deployment> | grep -i image
