@@ -42,6 +42,7 @@ az aks update \
 
 #get pods
 kubectl get pods
+kubectl get pods -l name=<label-name>
 kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName --all-namespaces
 #with watch
 kubectl get pods -w
@@ -346,3 +347,6 @@ kubectl get pods -n kube-system -l 'app in (secrets-store-csi-driver, secrets-st
 #obtener información sobre la creación de recursos
 kubectl explain pods --recursive |grep envFrom -A3
 
+#roles
+kubectl -n <namespace> roles.rbac.authorization.k8s.io
+kubectl -n <namespace> rolebindings.rbac.authorization.k8s.io
