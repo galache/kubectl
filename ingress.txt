@@ -1,0 +1,2 @@
+#ingress
+kubectl describe ingress <ingress-resource-name>

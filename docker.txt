@@ -1,0 +1,7 @@
+#docker
+docker images
+grep -i FROM /root/<image-name>/Dockerfile
+grep -i COPY /root/webapp-color/Dockerfile
+docker build -t webapp-color .
+docker run -p 8282:8080 webapp-color
+docker run python:3.6 cat /etc/*release*

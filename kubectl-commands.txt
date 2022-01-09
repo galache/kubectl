@@ -39,25 +39,6 @@ az aks update \
   --cluster-autoscaler-profile scan-interval=10s
 
 
-
-#get pods
-kubectl get pods
-kubectl get pods -l name=<label-name>
-kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName --all-namespaces
-#with watch
-kubectl get pods -w
-kubectl get pods -o wide
-
-#Pods running in the kube-system namespace
-kubectl get pods -n kube-system
-kubectl describe pod coredns-748cdb7bf4-sd2st -n kube-system
-kubectl top pods -n kube-system
-#create pod
-kubectl run <name> --image=<image> --dry-run=client -o yaml > pod.yaml
-#edit pod
-kubectl edit pod <name>
-#crear yaml a partir de un pod
-kubectl get pod <pod-name> -o yaml > pod-definition.yaml
 #numero de namespaces
 kubectl get ns --no-headers | wc -l
 

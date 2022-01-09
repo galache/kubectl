@@ -1,0 +1,54 @@
+#authentication and authorization
+kubectl create serviceaccount <useraccount-name>
+kubectl get serviceaccount
+#static password file and static token files
+kube-apiserver --basic-auth-file=user-details.csv
+
+#kubeconfig
+kubectl config view
+kubectl config view --kubeconfig <custom-config-name>
+kubectl config --kubeconfig=<custom-config-name>
+kubectl config --kubeconfig=<custom-config-name> current-context
+kubectl config -h
+#change the context
+kubectl config use-context <context-name>
+
+#certificate
+cat ca.crt | base64
+echo "LS0....bnJ" | base64 --decode
+
+#api groups
+curl https://kube-master:6443/version
+curl https://kube-master:6443/api/v1/pods
+
+#authorization
+Node Authorizer
+ABAC Attribute based authorization
+RBAC Role based access control
+Webhook
+AlwaysAllow by default
+AlwaysDeny
+
+#RBAC
+kubectl get roles
+kubectl get rolebindings
+kubectl describe role <role-name>
+kubectl describe rolebinding <role-binding-name>
+#check access
+ubectl get pods --as dev-user
+kubectl auth can-i create deployments
+kubectl auth can-i delete nodes
+kubectl auth can-i create pods --as <user-name>
+kubectl auth can-i create pods --as <user-name> --namespace <namespace-name>
+
+#cluster roles
+kubectl api-resources --namespaced=true
+kubectl api-resources --namespaced=false
+
+#authorization modes
+kubectl describe pod kube-apiserver-controlplane -n kube-system
+#and look for --authorization-mode
+
+#Admission Controllers
+kubectl exec kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep enable-adminssion-plugin
+ps -ef | grep kube-apiserver | grep admission-plugins

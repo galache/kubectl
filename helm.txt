@@ -1,0 +1,17 @@
+#helm
+choco install kubernetes-helm --classic
+helm search hub <word-to-shearch> helm search hub wordpress o https://artifacthub.io/
+#add repo
+helm repo add <repo-name> <url-repo>
+helm search repo <repo-name>
+helm repo list
+#install command
+helm install [release-name] [chart-name]
+#commands
+helm list
+helm uninstall <release-name>
+#download and not install
+helm pull --untar bitnami/wordpress
+ls wordpress
+#edit de values.yaml file and install
+helm install release-name ./wordpress
