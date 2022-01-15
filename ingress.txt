@@ -1,2 +1,3 @@
 #ingress
 kubectl describe ingress <ingress-resource-name>
+kubectl get ingress
