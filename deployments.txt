@@ -1,5 +1,6 @@
 #deployments
 kubectl get deployments
+kubectl get deployments.app
 kubectl describe deployment <deployment-name>
 kubectl describe deployments.apps <name-deployment> | grep -i image
 kubectl -n <namespace> expose deployment <deployment-name> --name  ingress --port 80 --target-port 80 --type NodePort --dry-run=client -o yaml > ingress-svc.yaml
