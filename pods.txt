@@ -19,7 +19,14 @@ kubectl top pods -n kube-system
 kubectl apply -f <yaml-file>
 kubectl run <name> --image <image> --dry-run=client -o yaml > pod.yaml
 kubectl run <name> --image <image>
+kubectl run <name> --image <image> --dry-run=client --labels=tier=<label-name>
 #edit pod
 kubectl edit pod <name>
+kubectl replace -f <file-name.yaml>
+kubectl replace --force -f <file-name.yaml> primero borrar y luego crear
 #crear yaml a partir de un pod
 kubectl get pod <pod-name> -o yaml > pod-definition.yaml
+#crear tambien un servicio
+kubectl run <name> --image=<image> --port 80 --expose --dry-run=client -o yaml
+
+

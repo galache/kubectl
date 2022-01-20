@@ -1,0 +1,13 @@
+#nodes in the cluster in ready state
+kubectl get nodes -o w
+arp <node-name>
+cat /etc/network/interfaces
+ip link
+ifconfig <interface-name> o ifconfig
+ssh <node-name> ifconfig <interface-name>
+ssh <node-name> ifconfig -a
+ip route ip r
+netstat -natulp | grep kube-scheduler
+netstat -natulp | grep etcd | grep LISTEN
+
+ps short for process status

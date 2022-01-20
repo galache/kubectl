@@ -5,3 +5,5 @@ kubectl explain service
 kubectl describe service kubernetes
 #create service
 kubectl expose deployment <deployment-name> --name=<service-name> --target-port=8080 --type=NodePort --port=8080 --dry-run=client -o yaml >svc.yaml
+
+kubectl replace -f ninx.yaml

@@ -1,0 +1,4 @@
+kubectl config set-context $(kubectl config current-context) --namespace=dev
+kubectl get pods --all-namespaces
+#numero de namespaces
+kubectl get ns --no-headers | wc -l

@@ -1,0 +1,2 @@
+kubectl logs -f <pod-name> | grep <palabra> #(por ejemplo users)
+kubectl logs -f <pod-name> -c <container-name> #podemos no poner la -c
