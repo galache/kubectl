@@ -1,4 +1,4 @@
-kubectl config set-context $(kubectl config current-context) --namespace=dev
+kubectl config set-context $(kubectl config current-context) --namespace=ingress-nginx
 kubectl get pods --all-namespaces
 #numero de namespaces
 kubectl get ns --no-headers | wc -l

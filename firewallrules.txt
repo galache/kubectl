@@ -1,0 +1,42 @@
+aks-narm-d-rg-crossresource-5e91a5-12266561.hcp.westeurope.azmk8s.io 	54532
+k8s.gcr.io
+storage.googleapis.com
+aks-narm-d-rg-crossresource-5e91a5-12266561.hcp.westeurope.azmk8s.io
+
+kubectl delete clusterrolebinding ingress-nginx
+kubectl delete clusterrole ingress-nginx
+kubectl delete clusterrolebinding ingress-nginx-admission
+kubectl delete clusterrole ingress-nginx-admission
+kubectl delete ingressclass nginx 
+kubectl delete  ValidatingWebhookConfiguration ingress-nginx-admission
+
+
+helm install nginx-ingress ingress-nginx/ingress-nginx \
+     --namespace ingress-basic \
+     --set controller.replicaCount=2 \
+     --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+     --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
+	 
+	 
+	 
+env:
+	- name: KUBERNETES_PORT_443_TCP_ADDR
+          value: "aks-narm-d-rg-crossresource-5e91a5-12266561.hcp.westeurope.azmk8s.io"
+    	- name: KUBERNETES_PORT
+      	  value: "tcp://aks-narm-d-rg-crossresource-5e91a5-12266561.hcp.westeurope.azmk8s.io:443"
+    	- name: KUBERNETES_PORT_443_TCP
+          value: "tcp://aks-narm-d-rg-crossresource-5e91a5-12266561.hcp.westeurope.azmk8s.io:443"
+    	- name: KUBERNETES_SERVICE_HOST
+          value: "aks-narm-d-rg-crossresource-5e91a5-12266561.hcp.westeurope.azmk8s.io"
+		  
+		  
+		  
+10.42.1.0/24
+	SNI TLS extension was missing
+	
+
+kubectl set env deployment/ingress-nginx-controller -n ingress-nginx KUBERNETES_SERVICE_HOST=*.hcp.westeurope.azmk8s.io
+kubectl set env deployment/ingress-nginx-controller  -n ingress-nginx KUBERNETES_SERVICE_PORT=443
+
+https://github.com/Azure/kubernetes-keyvault-flexvol/issues/137
+	
