@@ -1,0 +1,32 @@
+#taint
+kubectl taint nodes <node-name> key=value:taint-effect
+taint-effect:[NoSchedule | PreferNoSchedule | NoExecute]
+#ejemplo
+kubectl taint nodes node1 app=blue:NoSchedule
+#untaint
+kubectl taint nodes node1 app=blue:NoSchedule-
+kubectl describe node <node-name>
+kubectl describe node <node-name> | grep -i taint
+
+#tolerations in pod spec section
+
+tolerations:
+	key: "app"
+	operator: "Equal"
+	value: "blue"
+	effect: NoSchedule
+	
+	
+#node selector
+#en el pod:
+nodeSelector:
+	size: large #esto es un selector cuya label se encontrará en un node
+#node
+kubectl label node <node-name> <label-key>=<label-value>
+kubectl label node node1 size=large
+kubectl get nodes <node-name> --show-labels
+
+#node affinity
+#en el pod
+affinity:
+	nodeAffinity: (https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)

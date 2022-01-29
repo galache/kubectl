@@ -10,6 +10,9 @@ kubectl get pods -w
 kubectl get pods -o wide
 #pods logs
 kubectl exec webapp -- cat /log/app.log
+#memory
+kubectl top pod <pod-name> --namespace=<namespace-name>
+
 
 #Pods running in the kube-system namespace
 kubectl get pods -n kube-system

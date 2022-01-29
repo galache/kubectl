@@ -1,0 +1,8 @@
+kubectl get replicaset.apps
+#modify number of replicaset
+kubectl replace -f replicaset-definition.yaml
+kubectl scale --replicas=6 replicaset-definition.yaml
+kubectl scale --replicas=6 replicaset <replicaset-name>
+
+#Si en las replicaset establecemos una label de forma que todos los pods que tengan esa label se van replicar cuando cambiemos el tamaño
+el template siempre es necesario aunque ya existan los pods, por si acaso tiene que crear algún pod que se ha caido
