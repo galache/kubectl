@@ -1,0 +1,8 @@
+kubectl get order
+kubectl get certificaterequest
+kubectl get challenge
+kubectl cert-manager status certificate tls-secret
+kubectl get order,challenge,issuer,ingress,certificates,secret
+kubectl describe certificaterequest
+kubectl log ingress-nginx-controller-54d8b558d4-26v62 -n ingress-nginx
+ https://paraborrar.imcode.es/.well-known/acme-challenge/1Tz5M-caHHw906pg1X3VAFXeAAgMb8_Bow-HAxRbsss

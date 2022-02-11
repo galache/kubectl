@@ -1,0 +1,7 @@
+#access api groups
+#en una ventana teclear kubectl proxy para acceder a kube-api server
+kubectl proxy
+#en otra ventana
+curl http://localhost:8001 -k
+curl http://localhost:6443/apis -k | grep "name"
+

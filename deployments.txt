@@ -4,13 +4,19 @@ kubectl get deployments.app
 kubectl describe deployment <deployment-name>
 kubectl describe deployments.apps <name-deployment> | grep -i image
 kubectl -n <namespace> expose deployment <deployment-name> --name  ingress --port 80 --target-port 80 --type NodePort --dry-run=client -o yaml > ingress-svc.yaml
+
 #image
 kubectl describe deployment.apps frontend-deployment | grep -i image
-kubectl set image deployment nginx nginx=nginx:1.18
+kubectl set image deployment <deployment-name> <image-name>=<image>
 kubectl scale deployment --replicas=3
 
 kubectl replace -f ninx.yaml
 
 #imperative
 kubectl create deployment <deployment-name> --image=<image-name> --dry-run -o yaml > file.yaml
- 
+
+
+#update and rollback
+kubectl rollout status deployment/<deployment-name>
+kubectl rollout history deployment/<deployment-name>
+kubectl rollout undo deployment/<deployment-name>
