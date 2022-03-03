@@ -12,6 +12,9 @@ kubectl get pods -o wide
 kubectl exec webapp -- cat /log/app.log
 #memory
 kubectl top pod <pod-name> --namespace=<namespace-name>
+#delete pod
+kubectl delete pod <pod-name>
+kubectl delete pod <pod-name> --force #para hacerlo mas rápido, no hacerlo en producción
 
 
 #Pods running in the kube-system namespace
@@ -33,5 +36,7 @@ kubectl replace --force -f <file-name.yaml> primero borrar y luego crear
 kubectl get pod <pod-name> -o yaml > pod-definition.yaml
 #crear tambien un servicio
 kubectl run <name> --image=<image> --port 80 --expose --dry-run=client -o yaml
+
+
 
 

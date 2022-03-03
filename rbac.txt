@@ -1,0 +1,24 @@
+#role
+kubectl get roles
+kubectl describe role <role-name>
+#rolebinding
+kubectl get rolebindings
+kubectl describe rolebinding <role-binding-name>
+kubectl describe role <role-name> -n <namespace>
+#check access
+kubectl auth can-i create deployments
+kubectl auth can-i delete deployments
+kubectl auth can-i create deployments --as <user-name>
+kubectl auth can-i create deployments --as <user-name> --namespace <ns-name>
+
+#authorization mode check --authorization-mode field
+kubectl describe pod kube-apiserver-controlplane -n kube-system
+
+#clusterroles and clusterrolesbindings
+kubectl get clusterroles --no-headers | wc -l #número de clusterroles
+kubectl get clusterrolebindings --no-headers | wc -l  #número de clusterrolesbindings 
+	--no-headres omite la primera línea
+	wc -l número de líneas
+	
+172.29.68.66
+20.105.173.209

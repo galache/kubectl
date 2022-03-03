@@ -2,3 +2,7 @@ kubectl config set-context $(kubectl config current-context) --namespace=default
 kubectl get pods --all-namespaces
 #numero de namespaces
 kubectl get ns --no-headers | wc -l
+#obtener tipos de recursos que están adscritos a un determinado namespace o pertenecen al cluster
+kubectl api-resources --namespaced=true
+kubectl api-resources --namespaced=false
+kubectl -n <namespace> get all

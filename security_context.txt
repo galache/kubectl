@@ -1,0 +1,2 @@
+#que usuario está ejecutando un determinado pod
+kubectl exec <pod-name> -- whoami

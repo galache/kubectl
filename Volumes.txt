@@ -2,3 +2,5 @@
 kubectl get persistentvolumeclaim
 kubectl delete persistentvolumeclaim <volume-name>
 kubectl get events | grep -i volume
+
+kubectl explain persistentvolume --recursive | less
