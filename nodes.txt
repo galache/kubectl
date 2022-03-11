@@ -9,5 +9,6 @@ ssh <node-name> ifconfig -a
 ip route ip r
 netstat -natulp | grep kube-scheduler
 netstat -natulp | grep etcd | grep LISTEN
+kubectl describe node <node-name>
 
 ps short for process status

@@ -1,0 +1,15 @@
+#nodes y capacidad
+kubectl get nodes -o=jsonpath='{range .items[*]}{.metadata.name} {"\t"} {.status.capacity.cpu} {"\n"}{end}'
+kubectl get nodes -o=custom-columns=NODE:.metadata.name,CPU:.status.capacity.cpu
+kubectl get nodes -o=jsonpath='{.items[*].metadata.name}' > /opt/outputs/node_names.txt
+
+kubectl get nodes -o json > file.json
+
+#ordenación
+kubectl get nodes --sort-by=.metadata.name
+kubectl get nodes -o=custom-columns=NODE:.metadata.name,CPU:.status.capacity.cpu --sort-by=.metadata.name
+kubectl get pv --sort-by=.spec.capacity.storage -o=custom-columns=NAME:.metadata.name,CAPACITY:.spec.capacity.storage > /opt/outputs/pv-and-capacity-sorted.txt
+kubectl get pv --sort-by=.spec.capacity.storage -o=custom-columns=NAME:.metadata.name,CAPACITY:.spec.capacity.storage > /opt/outputs/pv-and-capacity-sorted.txt
+
+kubectl get nodes -o json > file.json
+

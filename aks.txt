@@ -1,0 +1,2 @@
+#deshabilitar monitor en un cluster
+az aks disable-addons -a monitoring -n aks-narm-stg -g rg-crossresources-stg
