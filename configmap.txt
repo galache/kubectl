@@ -1,0 +1,60 @@
+#configmap
+kubectl create configmap <config-name>
+	--from-literal=<key>=<value>
+	--from-literal=<key>=<value>
+	...
+	
+# Create the configmap from a directory
+kubectl create configmap <configmap-name> --from-file=<directory> #configure-pod-container/configmap/
+
+# From a file
+kubectl create configmap <configmap-name> --from-file=configure-pod-container/configmap/game.properties
+
+#From multiples files
+kubectl create configmap <configmap-name> --from-file=configure-pod-container/configmap/game.properties --from-file=configure-pod-container/configmap/ui.properties
+
+#Define the key to use when creating a ConfigMap from a file 
+kubectl create configmap game-config-3 --from-file=<my-key-name>=<path-to-file>
+
+------------------
+
+##Generate ConfigMaps from files
+# Create a kustomization.yaml file with ConfigMapGenerator
+cat <<EOF >./kustomization.yaml
+configMapGenerator:
+- name: game-config-4
+  files:
+  - configure-pod-container/configmap/game.properties
+EOF
+
+kubectl apply -k .
+--------------------
+
+
+
+kubectl get configmaps
+kubectl describe configmaps
+
+#Para injectar en un pod
+spec:
+	containers:
+	
+	envFrom:
+		- configMapRef:
+			name: <config-name>
+			
+#solo una variable
+spec:
+	containers:
+	
+	env:
+		- name: <key>
+		  valueFrom:
+			- configMapKeyRef:
+				name: <key>
+				
+#como volume
+volumes:
+- name: <volume-name>
+  configMap:
+	name: app-config

@@ -1,0 +1,19 @@
+#upgrade cluster
+kubeadm upgrade plan
+
+#master node
+apt-get upgrade -y kubeadm=<version>
+kubeadm upgrade apply <version>
+#upgrade kubelet on the master node
+apt-gte upgrad -y kubelet=<version>
+systemctl restart kubelet
+
+#worker node
+kubectl drain <node-name>
+
+apt-get upgrade -y kubeadm=<version>
+apt-get upgrade -y kubelet=<version>
+kubeadm upgrade node config --kubelet-version <version>
+systemctl restart kubelet
+
+kubectl uncordon <node-name>

@@ -8,6 +8,8 @@ kubectl -n <namespace> expose deployment <deployment-name> --name  ingress --por
 #image
 kubectl describe deployment.apps frontend-deployment | grep -i image
 kubectl set image deployment <deployment-name> <image-name>=<image>
+kubectl set image deployment poc-football poc-football=index.docker.io/rmglobaladmin/poc-bc-squad.poc-rm-ms-football-squad-aks:3.4.8-dev20220413.7
+
 kubectl scale deployment --replicas=3
 
 kubectl replace -f ninx.yaml
